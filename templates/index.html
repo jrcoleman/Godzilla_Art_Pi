@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="post">
+    <label for="prompt">Prompt</label>
+    <input type="text" name="prompt"
+           placeholder="Godzilla in the style of a woodcut."
+           value="{{ request.form['prompt'] }}"></input>
+    <br>
+    <label for="method">Method</label>
+        <select name="method" id="method">
+            <option value="local">Local</option>
+            <option value="api">API</option>
+        </select>
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}
