@@ -1,13 +1,30 @@
+# Local
+from diffusers import StableDiffusionPipeline
+# API
 import aiohttp
 import aiofiles
 import asyncio
-from io import BytesIO
+# General
 from PIL import Image
 import logging
+import json
+
+# Get Private Configuration
+private_conf_f = open('private_conf.json')
+private_conf = json.load(private_conf_f)
+private_conf_f.close()
+
+# Global Variables
 
 
+# Local
+model_local = "./stable-diffusion-2-1"
+pipe = StableDiffusionPipeline.from_pretrained(model_local, low_cpu_mem_usage=True)
+pipe.to("cpu")
+
+# API
 model_endpoint = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1"
-hf_token = ""
+hf_token = private_conf['hf_token']
 logging.basicConfig(level=logging.DEBUG)
 
 async def gen_api_image(prompt:str):
@@ -30,11 +47,12 @@ async def gen_api_image(prompt:str):
       logging.info(f"Status: {response.status}")
       logging.info(f"Headers: {response.headers}")
       if response.status == 200:
-        async with aiofiles.open("test_image.png", mode='wb') as f:
+        async with aiofiles.open("output.png", mode='wb') as f:
           await f.write(await response.read())
 
-# async def gen_local_image(prompt:str):
-
+def gen_local_image(prompt:str):
+  image = pipe(prompt, width=800, height=480).images[0]
+  image.save("output.png")
 
 # Main Function
 

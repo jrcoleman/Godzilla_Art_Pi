@@ -154,5 +154,14 @@ cython_debug/
 # Waveshare Library
 waveshare_epd/
 
+# Stable Diffusion Model Files
+stable-diffusion*/
+
+# Zip Packages
+*.zip
+
 # Test Images
 *.png
+
+# Private Config File
+private_conf.json

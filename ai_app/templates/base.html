@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %} - Pai Art</title>
+    <style>
+        nav a {
+            color: #d64161;
+            text-decoration: none;
+        }
+        .alert {
+            padding: 20px;
+            margin: 5px;
+            color: #970020;
+            background-color: #ffd5de;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}">Prompt</a>
+    </nav>
+    <hr>
+    <div class="content">
+        {% if submit_message != "" %}
+        <div class="alert">{{ submit_message }}</div>
+        {% endif %}
+        {% block content %} {% endblock %}
+    </div>
+    <hr>
+    <nav>
+        <a href="{{ flower_addr }}" target="_blank">Flower Task Monitor</a>
+    </nav>
+</body>
+</html>

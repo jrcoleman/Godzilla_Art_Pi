@@ -5,7 +5,9 @@
     <label for="prompt">Prompt</label>
     <input type="text" name="prompt"
            placeholder="Godzilla in the style of a woodcut."
-           value="{{ request.form['prompt'] }}"></input>
+           value="{{ request.form['prompt'] }}"
+           spellcheck="true"
+           size="250"></input>
     <br>
     <label for="method">Method</label>
         <select name="method" id="method">
