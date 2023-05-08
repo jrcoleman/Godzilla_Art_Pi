@@ -1,33 +1,25 @@
-# Local
+# AI Model
 from diffusers import StableDiffusionPipeline
-# API
-import aiohttp
-import aiofiles
-import asyncio
 # General
 from PIL import Image
 import logging
 import json
+import requests
+from io import BytesIO
+import time
 
 # Get Private Configuration
 private_conf_f = open('private_conf.json')
 private_conf = json.load(private_conf_f)
 private_conf_f.close()
 
-# Global Variables
-
-
-# Local
+# Variables
+output_path= "/var/tmp"
 model_local = "./stable-diffusion-2-1"
-pipe = StableDiffusionPipeline.from_pretrained(model_local, low_cpu_mem_usage=True)
-pipe.to("cpu")
-
-# API
-model_endpoint = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1"
+model_api = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1"
 hf_token = private_conf['hf_token']
-logging.basicConfig(level=logging.DEBUG)
 
-async def gen_api_image(prompt:str):
+def gen_api_image(prompt:str):
   payload = {
     "inputs": prompt,
     "parameters": {
@@ -41,21 +33,28 @@ async def gen_api_image(prompt:str):
     "Content-Type": "application/json",
     "Accept": "image/png"
   }
-  async with aiohttp.ClientSession() as session:
-    async with session.post(model_endpoint, headers=headers, json=payload) as response:
-      logging.info("Response received.")
-      logging.info(f"Status: {response.status}")
-      logging.info(f"Headers: {response.headers}")
-      if response.status == 200:
-        async with aiofiles.open("output.png", mode='wb') as f:
-          await f.write(await response.read())
-
+  retry = True
+  image
+  while(retry): 
+    logging.info("Requesting image.")
+    response = requests.post(model_api, headers=headers, json=payload)
+    logging.info("Response received.")
+    logging.info(f"Status: {response.status_code}")
+    logging.debug(f"Headers: {response.headers}")
+    if response.status_code == 200:
+      image = Image.open(BytesIO(response.content))
+      image.save(f"{output_path}/ai_output.png")
+      retry = False
+    elif response.status_code == 503:
+      logging.info("503 Throttle. Waiting to resubmit.")
+      time.sleep(10)
+    else:
+      logging.error(f"Request error: {response.text}")
+      raise Exception("API Request Error.")
+  return f"{output_path}/ai_output.png"
 def gen_local_image(prompt:str):
-  image = pipe(prompt, width=800, height=480).images[0]
-  image.save("output.png")
-
-# Main Function
-
-# Query the Hugging Face Stability AI API
-logging.info("Submitting request")
-asyncio.run(gen_api_image("Mothra in the style of a woodcut."))
+  pipe = StableDiffusionPipeline.from_pretrained(model_local, low_cpu_mem_usage=True)
+  pipe.to("cpu")
+  image = pipe(prompt, width=800, height=480, num_inference_steps=30).images[0]
+  image.save(f"{output_path}/ai_output.png")
+  return f"{output_path}/ai_output.png"

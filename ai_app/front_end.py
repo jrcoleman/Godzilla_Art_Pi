@@ -14,7 +14,7 @@ flower_addr = private_conf['flower_addr']
 
 app = Flask(__name__)
 
-@app.route('/', methods=('GET', 'POST'))
+@app.route('/', methods=['GET', 'POST'])
 def index():
   if request.method == 'POST':
     prompt = request.form['prompt']

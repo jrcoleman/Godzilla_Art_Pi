@@ -15,9 +15,11 @@ sudo apt-get install python3-pil
 sudo apt-get install python3-numpy
 sudo pip3 install RPi.GPIO
 sudo pip3 install spidev
+sudo pip3 install flask
 ```
 
-##
+## Create Flask Daemon
+
 
 # AI Server Deployment - Ubuntu 
 
@@ -44,7 +46,7 @@ Change `supervised no` to `supervised systemd`.
 ```
 sudo pip install -U "celery[redis]"
 ```
-### Create Worker Deamon
+### Create Worker Daemon
 - Create celery user:  
 ```
 sudo adduser celery
@@ -166,3 +168,18 @@ ExecStart=/bin/sh -c '/usr/local/bin/flask -A front_end run -h dellbuntu.local'
 [Install]
 WantedBy=multi-user.target
 ```
+
+## Stable Diffusion Module
+### Install Model
+- Install Prerequisites:  
+```
+sudo pip install -U diffusers transformers accelerate scipy safetensors
+sudo pip install requests
+```
+- Clone Model:  
+```
+sudo apt install git-lfs
+git lfs install
+git clone https://huggingface.co/stabilityai/stable-diffusion-2-1
+sudo mv stable-diffusion-2-1/ /opt/ai_app/
+```  
