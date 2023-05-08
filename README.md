@@ -19,7 +19,20 @@ sudo pip3 install flask
 ```
 
 ## Create Flask Daemon
+- Create service file. `/etc/systemd/system/flask.service`:  
+```
+[Unit]
+Description=Flask Service
 
+[Service]
+User=jonny
+Group=jonny
+WorkingDirectory=/home/jonny/display_app
+ExecStart=/bin/sh -c '/usr/local/bin/flask -A upload_image run -h raspberrypi.local'
+
+[Install]
+WantedBy=multi-user.target
+```
 
 # AI Server Deployment - Ubuntu 
 
@@ -183,3 +196,6 @@ git lfs install
 git clone https://huggingface.co/stabilityai/stable-diffusion-2-1
 sudo mv stable-diffusion-2-1/ /opt/ai_app/
 ```  
+
+## Known Issues
+- Weird lookup issue for .local domains on dellbuntu.

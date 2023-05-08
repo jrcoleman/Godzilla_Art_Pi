@@ -1,11 +1,8 @@
 import requests
-from PIL import Image
 
 url = 'http://raspberrypi.local:5000'
 
-image = Image.open('ai_output.png')
-
-files = {'image': image.tobytes()}
+files = {'image': open('ai_output.png','rb')}
 
 r = requests.post(url, files=files)
 
