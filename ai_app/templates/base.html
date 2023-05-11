@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %} {% endblock %} - Pai Art</title>
+    <title>Pai Art</title>
     <style>
         nav a {
             color: #d64161;
@@ -30,6 +30,12 @@
     <hr>
     <nav>
         <a href="{{ flower_addr }}" target="_blank">Flower Task Monitor</a>
+    </nav>
+    <nav>
+        <a href="{{ url_for('image') }}">Latest Image</a>
+    </nav>
+    <nav>
+        <a href="{{ url_for('resend') }}">Resend Image</a>
     </nav>
 </body>
 </html>

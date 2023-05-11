@@ -29,6 +29,7 @@ User=jonny
 Group=jonny
 WorkingDirectory=/home/jonny/display_app
 ExecStart=/bin/sh -c '/usr/local/bin/flask -A upload_image run -h raspberrypi.local'
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
@@ -44,6 +45,17 @@ sudo apt install libnss-mdns
 - pip
 ```
 sudo apt install python3-pip
+```
+- Installation Folders
+```
+sudo mkdir /opt/ai_app
+sudo mkdir /opt/ai_app/templates
+sudo mkdir /opt/ai_app/static
+sudo chown celery:celery /opt/ai_app/static
+```
+- Other python packages
+```
+sudo pip install zeroconf
 ```
 
 ## Celery Task Queue
@@ -197,5 +209,11 @@ git clone https://huggingface.co/stabilityai/stable-diffusion-2-1
 sudo mv stable-diffusion-2-1/ /opt/ai_app/
 ```  
 
-## Known Issues
+# Known Issues
+## ai_app
 - Weird lookup issue for .local domains on dellbuntu.
+  - Fix: Reserve address and add to hosts file.
+- Limit total number of repeat requests on api 503.
+## display_app
+- Flask service starts on power on, but cannot be connected to until restarted. Probably need to change .service after to something else.
+- Flask service should use another user, but I'm too lazy to fix now.
