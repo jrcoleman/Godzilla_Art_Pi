@@ -11,11 +11,11 @@ sudo reboot
 ```
 sudo apt-get update
 sudo apt-get install python3-pip
-sudo apt-get install python3-pil
-sudo apt-get install python3-numpy
-sudo pip3 install RPi.GPIO
-sudo pip3 install spidev
-sudo pip3 install flask
+sudo pip install Image
+sudo pip install numpy
+sudo pip install RPi.GPIO
+sudo pip install spidev
+sudo pip install flask
 ```
 
 ## Create Flask Daemon
@@ -23,17 +23,19 @@ sudo pip3 install flask
 ```
 [Unit]
 Description=Flask Service
+After=network.target
 
 [Service]
 User=jonny
 Group=jonny
 WorkingDirectory=/home/jonny/display_app
-ExecStart=/bin/sh -c '/usr/local/bin/flask -A upload_image run -h raspberrypi.local'
+ExecStart=/bin/sh -c '/usr/local/bin/flask -A upload_image run -h paiartzero.local'
 Restart=always
 
 [Install]
 WantedBy=multi-user.target
-```
+```  
+- Enable and start service.
 
 # AI Server Deployment - Ubuntu 
 
@@ -113,20 +115,13 @@ WantedBy=multi-user.target
 - Create service config file. `/etc/conf.d/celery`:  
 ```
 # Name of nodes to start
-# here we have a single node
 CELERYD_NODES="local1 api1"
-# or we could have three nodes:
-#CELERYD_NODES="w1 w2 w3"
 
 # Absolute or relative path to the 'celery' command:
 CELERY_BIN="/usr/local/bin/celery"
-#CELERY_BIN="/virtualenvs/def/bin/celery"
 
 # App instance to use
-# comment out this line if you don't use an app
 CELERY_APP="tasks"
-# or fully qualified:
-#CELERY_APP="proj.tasks:app"
 
 # How to call manage.py
 CELERYD_MULTI="multi"
@@ -142,13 +137,38 @@ CELERYD_LOG_FILE="/var/log/celery/%n%I.log"
 CELERYD_LOG_LEVEL="INFO"
 
 # you may wish to add these options for Celery Beat
-#CELERYBEAT_PID_FILE="/var/run/celery/beat.pid"
-#CELERYBEAT_LOG_FILE="/var/log/celery/beat.log"
+CELERYBEAT_PID_FILE="/run/celery/beat.pid"
+CELERYBEAT_LOG_FILE="/var/log/celery/beat.log"
+CELERYBEAT_LOG_LEVEL="INFO"
+CELERYBEAT_OPTS="--schedule=/run/celery/celerybeat-schedule"
 
 # options for flower
 FLOWER_ADDR="dellbuntu.local"
 FLOWER_PORT="5555"
-```  
+```
+### Create Beat Daemon
+- Create service file. `/etc/systemd/system/celerybeat.service`:  
+```
+[Unit]
+Description=Celery Beat Service
+After=celery.service
+PartOf=celery.service
+
+[Service]
+Type=simple
+User=celery
+Group=celery
+EnvironmentFile=/etc/conf.d/celery
+WorkingDirectory=/opt/ai_app
+ExecStart=/bin/sh -c '${CELERY_BIN} -A ${CELERY_APP} beat \
+    --pidfile=${CELERYBEAT_PID_FILE} \
+    --logfile=${CELERYBEAT_LOG_FILE} \
+    --loglevel="${CELERYBEAT_LOG_LEVEL}" $CELERYBEAT_OPTS'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
 ### Install Celery Flower
 - Install Application:  
 ```

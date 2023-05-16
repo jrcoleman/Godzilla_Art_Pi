@@ -1,6 +1,6 @@
 import requests
 
-url = 'http://raspberrypi.local:5000'
+url = 'http://paiartzero.local:5000'
 
 files = {'image': open('ai_output.png','rb')}
 

@@ -10,7 +10,7 @@ from celery.schedules import crontab
 from stable_diffusion import gen_api_image, gen_local_image
 
 # Display
-display_url = 'http://raspberrypi.local:5000'
+display_url = 'http://paiartzero.local:5000'
 
 # Prompt Generation
 godzilla_dict_f = open('godzilla.json')
