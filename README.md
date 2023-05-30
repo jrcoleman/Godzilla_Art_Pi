@@ -234,6 +234,7 @@ sudo mv stable-diffusion-2-1/ /opt/ai_app/
 - Weird lookup issue for .local domains on dellbuntu.
   - Fix: Reserve address and add to hosts file.
 - Limit total number of repeat requests on api 503.
+- /var/run not being create on restart.  
 ## display_app
 - Flask service starts on power on, but cannot be connected to until restarted. Probably need to change .service after to something else.
 - Flask service should use another user, but I'm too lazy to fix now.
