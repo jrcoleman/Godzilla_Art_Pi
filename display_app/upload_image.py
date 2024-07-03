@@ -34,7 +34,7 @@ def upload_to_display():
       epd.init()
       # Displaying Image
       logging.debug("Displaying Image")
-      epd.display(epd.getbuffer(image_bw))
+      epd.display_frame(epd.get_frame_buffer(image_bw))
       logging.debug("Sleeping Display")
       epd.sleep()
     else:
