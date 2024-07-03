@@ -1,0 +1,5 @@
+Image
+numpy
+RPi.GPIO
+spidev
+flask

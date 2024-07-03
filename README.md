@@ -7,35 +7,29 @@ Choose Interfacing Options -> SPI -> Yes Enable SPI interface
 sudo reboot
 ```
 
-## Install Dependencies
+## Install PIP and Git
 ```
 sudo apt-get update
 sudo apt-get install python3-pip
-sudo pip install Image
-sudo pip install numpy
-sudo pip install RPi.GPIO
-sudo pip install spidev
-sudo pip install flask
+sudo apt-get install git
+```
+## Get Repo
+```
+git clone https://github.com/jrcoleman/Godzilla_Art_Pi.git
+```
+## Install dependencies
+```
+cd Godzilla_art_pi/display_app
+sudo pip install -r requirements.txt
 ```
 
-## Create Flask Daemon
-- Create service file. `/etc/systemd/system/flask.service`:  
+## Create Flask Service
+- Copy service file to `/etc/systemd/system/flask.service`:  
 ```
-[Unit]
-Description=Flask Service
-After=network.target
-
-[Service]
-User=jonny
-Group=jonny
-WorkingDirectory=/home/jonny/display_app
-ExecStart=/bin/sh -c '/usr/local/bin/flask -A upload_image run -h paiartzero.local'
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
+sudo cp system_files/flask.service /etc/systemd/system/flask.service
+sudo systemd enable flask
+sudo systemd start flask
 ```  
-- Enable and start service.
 
 # AI Server Deployment - Ubuntu 
 

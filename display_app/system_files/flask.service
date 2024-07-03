@@ -1,0 +1,13 @@
+[Unit]
+Description=Flask Service
+After=network-online.target
+
+[Service]
+User=jonny
+Group=jonny
+WorkingDirectory=/home/jonny/display_app
+ExecStart=/bin/sh -c '/usr/local/bin/flask -A upload_image run -h paiartzero.local'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
