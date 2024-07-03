@@ -8,8 +8,11 @@ import time
 import epd7in5
 
 # Variables
+# Display resolution
+EPD_WIDTH       = 800
+EPD_HEIGHT      = 480
 allowed_ext = ['png', 'jpg', 'jpeg', 'gif', 'tiff', 'bmp']
-display_size = (800, 480)
+display_size = (EPD_WIDTH, EPD_HEIGHT)
 
 app = Flask(__name__)
 
