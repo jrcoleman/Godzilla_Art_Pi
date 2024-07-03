@@ -13,10 +13,11 @@ sudo apt-get update
 sudo apt-get install libopenjp2-7
 sudo apt-get install python3-pip
 sudo apt-get install git
-git clone https://github.com/jrcoleman/Godzilla_Art_Pi.git
 python -m venv display-app
 source display-app/bin/activate
 pip install -r Godzilla_art_pi/display_app/requirements.txt
+git clone https://github.com/waveshareteam/e-Paper.git
+
 sudo cp Godzilla_art_pi/display_app/system_files/flask.service /etc/systemd/system/flask.service
 sudo systemctl enable flask
 sudo systemctl start flask

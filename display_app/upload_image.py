@@ -5,14 +5,11 @@ import json
 import logging
 import time
 # Waveshare Display Library
-import epd7in5
+from waveshare_epd import epd7in5_V2_fast
 
 # Variables
-# Display resolution
-EPD_WIDTH       = 800
-EPD_HEIGHT      = 480
 allowed_ext = ['png', 'jpg', 'jpeg', 'gif', 'tiff', 'bmp']
-display_size = (EPD_WIDTH, EPD_HEIGHT)
+display_size = (800, 480)
 
 app = Flask(__name__)
 
@@ -33,11 +30,11 @@ def upload_to_display():
         image_bw = image_bw.resize(display_size)
       # Initialize Display
       logging.debug("Initializing Display")
-      epd = epd7in5.EPD()
+      epd = epd7in5_V2_fast.EPD()
       epd.init()
       # Displaying Image
       logging.debug("Displaying Image")
-      epd.display_frame(epd.get_frame_buffer(image_bw))
+      epd.display(epd.getbuffer(image_bw))
       logging.debug("Sleeping Display")
       epd.sleep()
     else:
