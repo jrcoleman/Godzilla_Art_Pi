@@ -5,7 +5,7 @@ import json
 import logging
 import time
 # Waveshare Display Library
-from waveshare_epd import epd7in5_V2_fast
+import epd7in5
 
 # Variables
 allowed_ext = ['png', 'jpg', 'jpeg', 'gif', 'tiff', 'bmp']
@@ -30,7 +30,7 @@ def upload_to_display():
         image_bw = image_bw.resize(display_size)
       # Initialize Display
       logging.debug("Initializing Display")
-      epd = epd7in5_V2_fast.EPD()
+      epd = epd7in5.EPD()
       epd.init()
       # Displaying Image
       logging.debug("Displaying Image")

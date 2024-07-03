@@ -3,3 +3,4 @@ numpy
 RPi.GPIO
 spidev
 flask
+epd-library

@@ -10,6 +10,7 @@ sudo reboot
 ## Install Display App
 ```
 sudo apt-get update
+sudo apt-get install libopenjp2-7
 sudo apt-get install python3-pip
 sudo apt-get install git
 git clone https://github.com/jrcoleman/Godzilla_Art_Pi.git
