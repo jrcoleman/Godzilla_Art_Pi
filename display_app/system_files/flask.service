@@ -5,7 +5,7 @@ After=network-online.target
 [Service]
 User=jonny
 Group=jonny
-WorkingDirectory=/home/jonny/display-app
+WorkingDirectory=/home/jonny/Godzilla_Art_Pi/display_app
 ExecStart=/bin/sh -c '/home/jonny/display-app/bin/flask -A upload_image run -h paiartzero.local'
 Restart=always
 

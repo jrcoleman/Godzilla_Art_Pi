@@ -7,28 +7,18 @@ Choose Interfacing Options -> SPI -> Yes Enable SPI interface
 sudo reboot
 ```
 
-## Install PIP and Git
+## Install Display App
 ```
 sudo apt-get update
 sudo apt-get install python3-pip
 sudo apt-get install git
-```
-## Get Repo
-```
 git clone https://github.com/jrcoleman/Godzilla_Art_Pi.git
-```
-## Install display app
-```
 python -m venv display-app
 source display-app/bin/activate
 pip install -r Godzilla_art_pi/display_app/requirements.txt
-```
-
-## Create Flask Service
-```
 sudo cp Godzilla_art_pi/display_app/system_files/flask.service /etc/systemd/system/flask.service
-sudo systemd enable flask
-sudo systemd start flask
+sudo systemctl enable flask
+sudo systemctl start flask
 ```  
 
 # AI Server Deployment - Ubuntu 
@@ -152,6 +142,7 @@ PartOf=celery.service
 Type=simple
 User=celery
 Group=celery
+RuntimeDirectory=celery
 EnvironmentFile=/etc/conf.d/celery
 WorkingDirectory=/opt/ai_app
 ExecStart=/bin/sh -c '${CELERY_BIN} -A ${CELERY_APP} beat \
@@ -228,7 +219,7 @@ sudo mv stable-diffusion-2-1/ /opt/ai_app/
 - Weird lookup issue for .local domains on dellbuntu.
   - Fix: Reserve address and add to hosts file.
 - Limit total number of repeat requests on api 503.
-- /run/celery not being create on restart.  
+- ~~/run/celery not being create on restart.~~  
 ## display_app
 - Flask service starts on power on, but cannot be connected to until restarted. Probably need to change .service after to something else.
 - Flask service should use another user, but I'm too lazy to fix now.
