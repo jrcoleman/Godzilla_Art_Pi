@@ -17,16 +17,16 @@ sudo apt-get install git
 ```
 git clone https://github.com/jrcoleman/Godzilla_Art_Pi.git
 ```
-## Install dependencies
+## Install display app
 ```
-cd Godzilla_art_pi/display_app
-sudo pip install -r requirements.txt
+python -m venv display-app
+source display-app/bin/activate
+pip install -r Godzilla_art_pi/display_app/requirements.txt
 ```
 
 ## Create Flask Service
-- Copy service file to `/etc/systemd/system/flask.service`:  
 ```
-sudo cp system_files/flask.service /etc/systemd/system/flask.service
+sudo cp Godzilla_art_pi/display_app/system_files/flask.service /etc/systemd/system/flask.service
 sudo systemd enable flask
 sudo systemd start flask
 ```  

@@ -5,8 +5,8 @@ After=network-online.target
 [Service]
 User=jonny
 Group=jonny
-WorkingDirectory=/home/jonny/display_app
-ExecStart=/bin/sh -c '/usr/local/bin/flask -A upload_image run -h paiartzero.local'
+WorkingDirectory=/home/jonny/display-app
+ExecStart=/bin/sh -c '/home/jonny/display-app/bin/flask -A upload_image run -h paiartzero.local'
 Restart=always
 
 [Install]
